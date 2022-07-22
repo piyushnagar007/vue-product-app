@@ -8,17 +8,19 @@ export default {
   data() {
     return{
       premium: false,
-    cart: []
     }
   },
   methods: {
     updateCart(id){
-      this.cart.push(id);
+      this.$store.commit('addToCart', id);
     },
     removeFromCart(id){
-      this.cart = this.cart.filter((value) => {
-        return value != id
-      })
+      this.$store.commit('removeFromCart', id);
+    }
+  },
+  computed: {
+    getCartSize(){
+      return this.$store.getters.cartSize;
     }
   }
 }
@@ -26,7 +28,7 @@ export default {
 
 <template>
   <div class="cart">
-    <p>Cart({{ cart.length }})</p>
+    <p>Cart({{ getCartSize }})</p>
   </div>
   <ProductVue :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart"></ProductVue>
 </template>
